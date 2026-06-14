@@ -1,0 +1,559 @@
+/* ============================================================
+   ADAS Detector — "Liquid Glass" (iOS-inspired, minimalist dark)
+   Accent: iOS systemBlue #0A84FF  ·  Suprafete translucide + colturi rotunjite
+   Semantic: verde #30D158 · rosu #FF453A · orange #FF9F0A · indigo #5E5CE6
+   ============================================================ */
+
+/* --- Fundal de baza (solid intunecat). Suprafetele "glass" sunt alb-translucid
+   PESTE aceasta baza -> efect frosted. Baza trebuie OPACA, altfel offscreen iese alb. */
+QMainWindow { background: #0A0B0F; }
+QWidget {
+    background: #0A0B0F;
+    color: #F5F5F7;
+    font-family: "Segoe UI Variable", "Segoe UI", "Inter", sans-serif;
+    font-size: 12px;
+}
+QWidget#widgetCentral {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+        stop:0 #0C0E14, stop:0.55 #0A0B11, stop:1 #08090E);
+}
+QStackedWidget { background: transparent; }
+
+/* Niciun QLabel nu are box implicit (cardurile/pastilele il pun prin #objectName) */
+QLabel { background: transparent; border: none; color: #F5F5F7; }
+
+/* --- Menu bar (bara translucida, fara linii dure) --- */
+QMenuBar {
+    background: rgba(255,255,255,0.02);
+    color: #AEAEB2;
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 4px 8px;
+    font-size: 12px;
+}
+QMenuBar::item { padding: 6px 14px; border-radius: 8px; background: transparent; }
+QMenuBar::item:selected { background: rgba(255,255,255,0.08); color: #FFFFFF; }
+QMenuBar::item:pressed { background: rgba(10,132,255,0.25); }
+
+QMenu {
+    background: rgba(28,28,32,0.98);
+    color: #F5F5F7;
+    border: 1px solid rgba(255,255,255,0.10);
+    border-radius: 12px;
+    padding: 6px;
+}
+QMenu::item { padding: 9px 30px 9px 16px; border-radius: 8px; }
+QMenu::item:selected { background: rgba(10,132,255,0.85); color: #FFFFFF; }
+QMenu::separator { height: 1px; background: rgba(255,255,255,0.08); margin: 5px 10px; }
+
+/* --- Sidebar (panou de sticla) --- */
+QFrame#sidebar {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 rgba(255,255,255,0.05), stop:1 rgba(255,255,255,0.02));
+    border: none;
+    border-right: 1px solid rgba(255,255,255,0.07);
+    min-width: 216px;
+    max-width: 216px;
+}
+QWidget#logoArea {
+    background: transparent;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+QLabel#logoIcon {
+    font-size: 24px;
+    color: #0A84FF;
+    padding: 24px 0 0 22px;
+}
+QLabel#titluApp {
+    font-size: 19px;
+    font-weight: bold;
+    color: #F5F5F7;
+    padding: 18px 16px 2px 16px;
+    letter-spacing: 3px;
+}
+QLabel#versiuneApp {
+    font-size: 10px;
+    color: #8E8E93;
+    padding: 0 16px 18px 16px;
+    letter-spacing: 0.5px;
+}
+
+/* Butoane navigare - pastila rotunjita, selectat = albastru iOS */
+QPushButton#navBtn {
+    background: transparent;
+    color: #AEAEB2;
+    border: none;
+    padding: 13px 14px 13px 16px;
+    margin: 3px 12px;
+    text-align: left;
+    font-size: 13px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+QPushButton#navBtn:hover {
+    background: rgba(255,255,255,0.07);
+    color: #F5F5F7;
+}
+QPushButton#navBtn:checked {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
+        stop:0 #0A84FF, stop:1 #0972E6);
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+QFrame#separatorSidebar {
+    background: rgba(255,255,255,0.06);
+    max-height: 1px; border: none; margin: 4px 16px;
+}
+
+/* --- Titluri panou --- */
+QLabel#titluPanou {
+    font-size: 22px;
+    font-weight: bold;
+    color: #F5F5F7;
+    padding-bottom: 4px;
+    letter-spacing: 0.2px;
+}
+QLabel#subtitluPanou {
+    font-size: 12px;
+    color: #8E8E93;
+    padding-bottom: 16px;
+}
+
+/* --- Toolbar video (sticla) --- */
+QFrame#toolbarVideo {
+    background: rgba(255,255,255,0.03);
+    border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    min-height: 58px;
+    max-height: 58px;
+}
+QLabel#labelFisierVideo {
+    color: #8E8E93;
+    font-size: 11px;
+    font-style: italic;
+    background: transparent;
+    border: none;
+}
+
+/* --- Display video --- */
+QLabel#displayVideo {
+    background-color: #000000;
+    color: rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    font-size: 15px;
+}
+
+/* --- Panou info dreapta (sticla) --- */
+#panouInfo {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1,
+        stop:0 rgba(255,255,255,0.05), stop:1 rgba(255,255,255,0.025));
+    border: none;
+    border-left: 1px solid rgba(255,255,255,0.07);
+    min-width: 300px;
+    max-width: 300px;
+}
+QLabel#labelSectiune {
+    font-size: 9px; font-weight: bold; color: #8E8E93;
+    letter-spacing: 1.8px; padding: 10px 12px 5px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* FPS mare (culoarea e setata in Python, color-coded) */
+QLabel#labelFps {
+    font-size: 40px; font-weight: bold; color: #30D158;
+    padding: 10px 14px 0 14px;
+    font-family: "Consolas", "JetBrains Mono", monospace;
+}
+QLabel#labelFpsUnit {
+    font-size: 10px; color: #8E8E93;
+    padding: 0 14px 6px 14px; letter-spacing: 2px;
+}
+QLabel#labelLatenta {
+    font-size: 11px; color: #FF9F0A;
+    font-family: "Consolas", monospace;
+    padding: 0 14px 8px 14px; letter-spacing: 0.5px;
+}
+QLabel#labelStatus { font-size: 11px; padding: 2px 14px 8px 14px; color: #8E8E93; font-style: italic; }
+QLabel#labelConfVal {
+    color: #0A84FF; font-weight: bold; font-size: 12px;
+    min-width: 36px; font-family: monospace;
+}
+
+/* Valoare prag pentru o clasa care URMEAZA globalul (fara prag explicit): estompat */
+QLabel#labelConfValGlobal {
+    color: #8E8E93; font-weight: 500; font-size: 12px;
+    min-width: 36px; font-family: monospace;
+}
+
+/* Buton mic de reset per clasa (readuce clasa la global) */
+QPushButton#btnResetClasa {
+    background: rgba(255,255,255,0.06); color: #AEAEB2;
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 5px;
+    font-size: 13px; padding: 0;
+}
+QPushButton#btnResetClasa:hover { background: rgba(255,255,255,0.14); color: #F5F5F7; }
+
+/* Header sectiuni colapsabile */
+QPushButton#headerColaps {
+    background: transparent; color: #8E8E93; border: none;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    text-align: left; padding: 11px 12px;
+    font-size: 10px; font-weight: bold; letter-spacing: 1.2px;
+}
+QPushButton#headerColaps:hover { background: rgba(255,255,255,0.05); color: #F5F5F7; }
+
+/* Lista detectii */
+QListWidget, #listaDetectii {
+    background: transparent; border: none; outline: none; color: #F5F5F7;
+}
+QListWidget::item, #listaDetectii::item {
+    padding: 5px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 12px; font-weight: 500; border-radius: 0;
+}
+QListWidget::item:hover, #listaDetectii::item:hover { background: rgba(255,255,255,0.05); }
+QListWidget::item:selected { background: rgba(10,132,255,0.25); color: #FFFFFF; }
+
+QWidget#zonaActiuniBara { border-top: 1px solid rgba(255,255,255,0.07); }
+
+/* --- Bara control jos (sticla) --- */
+QFrame#baraControl {
+    background: rgba(255,255,255,0.03);
+    border: none;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    min-height: 84px; max-height: 84px;
+}
+QLabel#labelTimp {
+    color: #AEAEB2; font-size: 11px; font-family: "Consolas", monospace;
+    min-width: 115px; letter-spacing: 0.5px;
+}
+QLabel#labelStatusMic { color: #8E8E93; font-size: 11px; font-style: italic; }
+
+/* --- Buton Play (rotund, albastru iOS) --- */
+QPushButton#btnPlay {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #0A84FF, stop:1 #0066FF);
+    color: #FFFFFF; font-size: 15px; font-weight: bold; border: none;
+    border-radius: 20px; min-width: 40px; max-width: 40px; min-height: 40px; max-height: 40px; padding: 0;
+}
+QPushButton#btnPlay:hover {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #409CFF, stop:1 #0A84FF);
+}
+QPushButton#btnPlay:pressed { background: #0066FF; }
+QPushButton#btnPlay:disabled { background: rgba(10,132,255,0.18); color: rgba(255,255,255,0.35); }
+
+/* Butoane playback secundare (glass) */
+QPushButton#btnPlayback {
+    background: rgba(255,255,255,0.06); color: #AEAEB2;
+    font-size: 11px; font-weight: bold;
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 9px;
+    min-height: 0; padding: 4px 8px;
+}
+QPushButton#btnPlayback:hover { background: rgba(255,255,255,0.12); color: #F5F5F7; border-color: rgba(255,255,255,0.18); }
+QPushButton#btnPlayback:pressed { background: rgba(10,132,255,0.25); }
+QPushButton#btnPlayback:disabled { color: rgba(142,142,147,0.4); border-color: rgba(255,255,255,0.04); background: rgba(255,255,255,0.02); }
+
+/* --- Seekbar (albastru) --- */
+QSlider#seekBar::groove:horizontal { height: 4px; background: rgba(255,255,255,0.10); border-radius: 2px; margin: 0 2px; }
+QSlider#seekBar::handle:horizontal {
+    background: #FFFFFF; width: 14px; height: 14px; margin: -6px 0; border-radius: 7px;
+    border: 1px solid rgba(0,0,0,0.15);
+}
+QSlider#seekBar::handle:horizontal:hover { width: 16px; height: 16px; margin: -7px 0; border-radius: 8px; }
+QSlider#seekBar::sub-page:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0A84FF, stop:1 #409CFF);
+    border-radius: 2px;
+}
+
+/* --- Slidere generice (confidence/iou/praguri) --- */
+QSlider::groove:horizontal { height: 4px; background: rgba(255,255,255,0.10); border-radius: 2px; }
+QSlider::handle:horizontal {
+    background: #FFFFFF; width: 16px; height: 16px; margin: -6px 0; border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.15);
+}
+QSlider::handle:horizontal:hover { background: #F0F0F2; }
+QSlider::sub-page:horizontal {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0066FF, stop:1 #0A84FF);
+    border-radius: 2px;
+}
+
+/* --- Butoane principale (albastru iOS, pilula) --- */
+QPushButton {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #0A84FF, stop:1 #0972E6);
+    color: #FFFFFF; border: none; padding: 7px 14px; border-radius: 11px;
+    font-size: 12px; font-weight: 600; min-height: 16px;
+}
+QPushButton:hover { background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #2B97FF, stop:1 #0A84FF); }
+QPushButton:pressed { background: #0066FF; }
+QPushButton:disabled { background: rgba(10,132,255,0.14); color: rgba(255,255,255,0.3); }
+
+QPushButton#btnDeschide { font-weight: bold; letter-spacing: 0.3px; }
+
+QPushButton#btnPericol {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #FF453A, stop:1 #E0352B); border-radius: 11px;
+}
+QPushButton#btnPericol:hover { background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #FF6961, stop:1 #FF453A); }
+
+QPushButton#btnSucces {
+    background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #30D158, stop:1 #28B84C); border-radius: 11px; color: #062a12;
+}
+QPushButton#btnSucces:hover { background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #4BE673, stop:1 #30D158); }
+
+/* Buton secundar = sticla neutra */
+QPushButton#btnSecundar {
+    background: rgba(255,255,255,0.07); color: #F5F5F7;
+    border: 1px solid rgba(255,255,255,0.10); border-radius: 11px; font-weight: 500;
+}
+QPushButton#btnSecundar:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
+QPushButton#btnSecundar:disabled { background: rgba(255,255,255,0.03); color: rgba(245,245,247,0.3); }
+
+/* --- Input-uri (glass) --- */
+QLineEdit {
+    background: rgba(255,255,255,0.06); color: #F5F5F7;
+    border: 1px solid rgba(255,255,255,0.10); border-radius: 10px;
+    padding: 8px 13px; font-size: 12px; selection-background-color: #0A84FF;
+}
+QLineEdit:focus { border-color: #0A84FF; background: rgba(255,255,255,0.09); }
+QLineEdit:disabled { background: rgba(255,255,255,0.02); color: #636366; }
+
+QComboBox {
+    background: rgba(255,255,255,0.06); color: #F5F5F7;
+    border: 1px solid rgba(255,255,255,0.10); border-radius: 10px;
+    padding: 7px 13px; font-size: 12px; min-width: 140px; selection-background-color: #0A84FF;
+}
+QComboBox:focus { border-color: #0A84FF; }
+QComboBox:hover { border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.09); }
+QComboBox::drop-down { border: none; width: 26px; }
+QComboBox::down-arrow {
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-top: 5px solid #8E8E93; margin-right: 8px;
+}
+QComboBox QAbstractItemView {
+    background: rgba(28,28,32,0.98); color: #F5F5F7;
+    border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 5px;
+    selection-background-color: rgba(10,132,255,0.85); outline: none;
+}
+
+/* Combo "Model": plat (doar text) in repaus, box doar la hover */
+QComboBox#comboModel { background: transparent; border: 1px solid transparent; }
+QComboBox#comboModel:hover { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); }
+QComboBox#comboModel::drop-down { border: none; width: 0px; background: transparent; }
+QComboBox#comboModel::down-arrow { image: none; width: 0px; height: 0px; border: none; }
+
+/* Combo viteza si rezolutie - sticla cu accent albastru subtil */
+QComboBox#comboViteza, QComboBox#comboRezolutie {
+    background: rgba(10,132,255,0.10); color: #58ABFF;
+    border: 1px solid rgba(10,132,255,0.25); border-radius: 9px;
+    padding: 4px 10px; font-weight: bold; font-size: 12px; font-family: monospace;
+}
+QComboBox#comboRezolutie { min-width: 88px; max-width: 110px; }
+QComboBox#comboViteza:hover, QComboBox#comboRezolutie:hover { border-color: rgba(10,132,255,0.5); background: rgba(10,132,255,0.16); }
+QComboBox#comboViteza::drop-down, QComboBox#comboRezolutie::drop-down { border: none; width: 14px; }
+QComboBox#comboViteza::down-arrow, QComboBox#comboRezolutie::down-arrow {
+    border-left: 4px solid transparent; border-right: 4px solid transparent;
+    border-top: 5px solid #58ABFF; margin-right: 4px;
+}
+QComboBox#comboViteza QAbstractItemView, QComboBox#comboRezolutie QAbstractItemView {
+    background: rgba(28,28,32,0.98); color: #F5F5F7;
+    border: 1px solid rgba(10,132,255,0.25); selection-background-color: rgba(10,132,255,0.7);
+}
+
+/* --- Checkbox --- */
+QCheckBox { color: #F5F5F7; spacing: 9px; font-size: 12px; }
+QCheckBox::indicator {
+    width: 18px; height: 18px; border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 6px; background: rgba(255,255,255,0.06);
+}
+QCheckBox::indicator:checked {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0A84FF, stop:1 #0066FF);
+    border-color: #0A84FF;
+    image: url(none);
+}
+QCheckBox::indicator:hover { border-color: #0A84FF; }
+QCheckBox:disabled { color: #636366; }
+
+/* --- GroupBox (card de sticla) --- */
+QGroupBox {
+    color: #8E8E93;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    margin-top: 20px;
+    padding: 18px 16px 16px 16px;
+    font-size: 10px; font-weight: bold; letter-spacing: 1.2px;
+    background: rgba(255,255,255,0.035);
+}
+QGroupBox::title {
+    subcontrol-origin: margin; left: 16px; padding: 2px 10px;
+    color: #8E8E93; background: transparent;
+}
+
+/* --- SpinBox --- */
+QSpinBox, QDoubleSpinBox {
+    background: rgba(255,255,255,0.06); color: #F5F5F7;
+    border: 1px solid rgba(255,255,255,0.10); border-radius: 10px; padding: 6px 10px;
+}
+QSpinBox:focus, QDoubleSpinBox:focus { border-color: #0A84FF; }
+QSpinBox::up-button, QSpinBox::down-button,
+QDoubleSpinBox::up-button, QDoubleSpinBox::down-button {
+    background: rgba(255,255,255,0.08); border: none; width: 18px; border-radius: 5px;
+}
+
+/* --- Progress bar --- */
+QProgressBar {
+    background: rgba(255,255,255,0.08); border: none; border-radius: 5px;
+    height: 6px; text-align: center; color: transparent;
+}
+QProgressBar::chunk {
+    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #0A84FF, stop:1 #409CFF);
+    border-radius: 5px;
+}
+
+/* --- Scroll bar (slim) --- */
+QScrollBar:vertical { background: transparent; width: 8px; margin: 3px; border-radius: 4px; }
+QScrollBar::handle:vertical { background: rgba(255,255,255,0.18); border-radius: 4px; min-height: 36px; }
+QScrollBar::handle:vertical:hover { background: rgba(255,255,255,0.32); }
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { height: 0; }
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical { background: none; }
+QScrollBar:horizontal { background: transparent; height: 8px; border-radius: 4px; }
+QScrollBar::handle:horizontal { background: rgba(255,255,255,0.18); border-radius: 4px; min-width: 36px; }
+QScrollBar::handle:horizontal:hover { background: rgba(255,255,255,0.32); }
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal { width: 0; }
+QScrollArea { border: none; background: transparent; }
+
+/* --- Status bar --- */
+QStatusBar {
+    background: rgba(255,255,255,0.02);
+    color: #8E8E93; border: none; border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 11px; min-height: 28px;
+}
+QStatusBar::item { border: none; }
+QStatusBar QLabel { color: #AEAEB2; padding: 0 14px; }
+
+/* --- Indicator conexiune RTSP (pastile) --- */
+QLabel#indicatorConectat {
+    color: #30D158; font-weight: bold; font-size: 12px; font-family: monospace;
+    background: rgba(48,209,88,0.12); border: 1px solid rgba(48,209,88,0.3);
+    border-radius: 9px; padding: 4px 12px;
+}
+QLabel#indicatorDeconectat {
+    color: #FF453A; font-weight: bold; font-size: 12px; font-family: monospace;
+    background: rgba(255,69,58,0.12); border: 1px solid rgba(255,69,58,0.3);
+    border-radius: 9px; padding: 4px 12px;
+}
+QLabel#indicatorAsteptare {
+    color: #FF9F0A; font-weight: bold; font-size: 12px; font-family: monospace;
+    background: rgba(255,159,10,0.12); border: 1px solid rgba(255,159,10,0.3);
+    border-radius: 9px; padding: 4px 12px;
+}
+
+/* --- Alerte ADAS --- */
+QFrame#alertaActiva {
+    background: rgba(255,69,58,0.12); border: 1px solid rgba(255,69,58,0.3);
+    border-left: 3px solid #FF453A; border-radius: 11px; padding: 4px;
+}
+QFrame#alertaInfo {
+    background: rgba(10,132,255,0.12); border: 1px solid rgba(10,132,255,0.3);
+    border-left: 3px solid #0A84FF; border-radius: 11px; padding: 4px;
+}
+QLabel#textAlerta { color: #FF8A80; font-size: 12px; font-weight: 600; }
+QLabel#textAlertaInfo { color: #9CC9FF; font-size: 12px; }
+
+/* --- Carduri hardware/benchmark (sticla) --- */
+QFrame#cardHardware {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 16px; padding: 16px;
+}
+QLabel#labelHwTitlu { font-size: 13px; font-weight: bold; color: #0A84FF; }
+QLabel#labelHwValoare { font-size: 12px; color: #F5F5F7; }
+
+QFrame#cardSectiune {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px; padding: 18px;
+}
+QLabel#labelSectiuneCard { font-size: 10px; font-weight: bold; color: #8E8E93; letter-spacing: 1.5px; }
+
+QFrame#cardHwMini {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 13px; padding: 12px; min-width: 120px;
+}
+QLabel#labelHwTitluMic { font-size: 10px; color: #8E8E93; font-weight: bold; letter-spacing: 0.5px; }
+
+/* Carduri selectie model */
+QPushButton#cardModel {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 16px; padding: 16px; text-align: left; color: #F5F5F7;
+    min-width: 180px; max-width: 240px; min-height: 96px; font-size: 12px; font-weight: 600;
+}
+QPushButton#cardModel:hover { border-color: rgba(10,132,255,0.5); background: rgba(10,132,255,0.10); }
+QPushButton#cardModel:checked {
+    background: rgba(10,132,255,0.18); border: 2px solid #0A84FF; color: #FFFFFF;
+}
+
+QLabel#labelRezultatBm { font-size: 16px; color: #30D158; font-weight: bold; }
+
+/* Carduri-optiune din benchmark-ul inteligent (cele 4 paliere FPS) */
+QPushButton#cardOptiune {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.09);
+    border-radius: 16px; padding: 14px; text-align: left; color: #F5F5F7;
+    min-width: 150px; max-width: 220px; min-height: 92px; font-size: 12px; font-weight: 600;
+}
+QPushButton#cardOptiune:hover { border-color: rgba(48,209,88,0.6); background: rgba(48,209,88,0.10); }
+QPushButton#cardOptiune:pressed { background: rgba(48,209,88,0.18); border: 2px solid #30D158; }
+
+/* Banner de recomandare benchmark (FPS scazut) - avertizare amber, clickabil */
+QPushButton#bannerBenchmark {
+    background: rgba(255,159,10,0.16); border: 1px solid rgba(255,159,10,0.5);
+    border-radius: 10px; color: #FF9F0A; text-align: left;
+    padding: 8px 12px; margin: 6px 12px 0 12px; font-size: 12px; font-weight: 600;
+}
+QPushButton#bannerBenchmark:hover { background: rgba(255,159,10,0.26); border-color: #FF9F0A; }
+
+/* --- ToolTip (glass) --- */
+QToolTip {
+    background: rgba(28,28,32,0.98); color: #F5F5F7;
+    border: 1px solid rgba(255,255,255,0.12); border-radius: 9px;
+    padding: 7px 11px; font-size: 11px;
+}
+
+/* --- Etichete diverse --- */
+QLabel#labelToolbar { color: #8E8E93; font-size: 11px; background: transparent; border: none; }
+QFrame#separatorVertical { background: rgba(255,255,255,0.10); }
+QFrame#separatorInfo { background: rgba(255,255,255,0.06); border: none; }
+QLabel#labelParam { color: #AEAEB2; font-size: 11px; font-weight: 500; }
+QLabel#labelFaraAlerte { color: #8E8E93; font-size: 11px; padding: 4px; }
+
+/* --- Bara de conectare RTSP --- */
+QFrame#baraConectare {
+    background: rgba(255,255,255,0.03); border: none;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+QLabel#labelHint       { color: #8E8E93; font-size: 11px; }
+QLabel#labelHintActiv  { color: #FF9F0A; font-size: 11px; }
+QLabel#labelHintSucces { color: #30D158; font-size: 11px; font-weight: bold; }
+QLabel#labelHintEroare { color: #FF453A; font-size: 11px; }
+
+/* --- Setari: descrieri si bara de actiuni --- */
+QLabel#labelDesc { color: #8E8E93; font-size: 11px; }
+QLabel#labelCod  { color: #8E8E93; font-size: 10px; font-family: "Consolas", monospace; }
+QLabel#labelSucces { color: #30D158; font-size: 12px; font-weight: bold; }
+QLabel#labelModificat { color: #FF9F0A; font-size: 12px; font-weight: bold; }
+QFrame#baraActiuniSetari {
+    border: none; border-top: 1px solid rgba(255,255,255,0.07);
+    background: rgba(255,255,255,0.03);
+}
+
+/* --- Maner colapsare panou --- */
+QFrame#handlePanou {
+    background: rgba(255,255,255,0.025);
+    border-left: 1px solid rgba(255,255,255,0.05);
+    border-right: 1px solid rgba(255,255,255,0.05);
+    min-width: 20px; max-width: 20px;
+}
+QPushButton#btnHandle {
+    background: rgba(10,132,255,0.15); color: #58ABFF;
+    border: 1px solid rgba(10,132,255,0.3); border-radius: 7px;
+    font-size: 10px; font-weight: bold; padding: 0; min-height: 0;
+}
+QPushButton#btnHandle:hover { background: rgba(10,132,255,0.35); color: #FFFFFF; border-color: rgba(10,132,255,0.6); }
+QLabel#labelVertical { color: #8E8E93; font-size: 10px; font-weight: bold; letter-spacing: 1px; }

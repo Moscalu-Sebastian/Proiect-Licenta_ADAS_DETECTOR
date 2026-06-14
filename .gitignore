@@ -1,0 +1,22 @@
+# Date si fisiere generate / stare locala (nu fac parte din cod)
+date_validare/
+runs/
+snapshots/
+__pycache__/
+*.pyc
+*.pyo
+
+# Baza de date locala si config migrat (se recreeaza la prima rulare)
+adas.db
+config.json
+config.json.migrat
+*.migrat
+
+# Build / impachetare
+build/
+dist/
+*.spec
+
+# Sistem
+.DS_Store
+Thumbs.db
