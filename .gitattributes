@@ -1,0 +1,8 @@
+# Normalizare automata a sfarsiturilor de linie (evita avertismentele CRLF/LF)
+* text=auto
+
+# Fisiere binare - nu se normalizeaza
+*.pt   binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
